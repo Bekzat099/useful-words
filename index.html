@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Useful Words — EN → RU / KZ</title>
+<meta name="description" content="1036 полезных английских слов с переводом на русский и казахский. Список, флеш-карточки и самопроверка.">
+<link rel="stylesheet" href="style.css?v=2">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">📚</span>
+    <div class="brand-text">
+      <h1>Useful Words</h1>
+      <p>English → Русский · Қазақша</p>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-view="list" role="tab">Слова</button>
+    <button class="tab" data-view="cards" role="tab">Карточки</button>
+    <button class="tab" data-view="test" role="tab">Проверка</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ============ VIEW 1: WORD LIST ============ -->
+  <section id="view-list" class="view active">
+    <div class="view-head">
+      <div class="stats">
+        <span class="chip">Всего слов: <b id="total-count">1036</b></span>
+        <span class="chip">Показано: <b id="shown-count">1036</b></span>
+      </div>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Поиск по слову или переводу…" autocomplete="off">
+      </div>
+    </div>
+    <div class="list-scroll">
+      <table class="word-table">
+        <thead>
+          <tr><th>#</th><th>English</th><th>Русский</th><th>Қазақша</th></tr>
+        </thead>
+        <tbody id="word-tbody"></tbody>
+      </table>
+      <p id="no-results" class="no-results" hidden>Ничего не найдено 😕</p>
+    </div>
+  </section>
+
+  <!-- ============ VIEW 2: FLASHCARDS ============ -->
+  <section id="view-cards" class="view">
+    <div class="card-stage">
+      <p class="hint">Нажми на карточку, чтобы перевернуть · стрелки ← → для навигации</p>
+      <div class="flip-scene" id="browse-scene">
+        <div class="flip-card" id="browse-card">
+          <div class="face front">
+            <span class="face-tag">EN</span>
+            <div class="face-word" id="browse-en">—</div>
+            <span class="face-num" id="browse-num">1 / 1036</span>
+          </div>
+          <div class="face back">
+            <span class="face-tag">RU</span>
+            <div class="face-word small" id="browse-ru">—</div>
+            <span class="face-tag kz">KZ</span>
+            <div class="face-word small" id="browse-kk">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-controls">
+        <button class="btn ghost" id="browse-prev">← Пред.</button>
+        <button class="btn primary" id="browse-flip">Перевернуть</button>
+        <button class="btn ghost" id="browse-next">След. →</button>
+      </div>
+      <div class="scrub">
+        <input type="range" id="browse-range" min="1" max="1036" value="1">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIEW 3: SELF TEST ============ -->
+  <section id="view-test" class="view">
+    <!-- setup -->
+    <div id="test-setup" class="test-setup">
+      <h2>Сколько слов будешь проверять?</h2>
+      <p class="sub">Возьмём <b>первые N</b> слов из списка — так, как ты их учил.</p>
+      <div class="preset-row" id="preset-row"></div>
+      <label class="custom-n">
+        <span>Своё число:</span>
+        <input type="number" id="custom-n" min="1" max="1036" value="100">
+        <button class="btn primary" id="start-test">Начать проверку</button>
+      </label>
+    </div>
+
+    <!-- running -->
+    <div id="test-run" class="card-stage" hidden>
+      <div class="progress-line">
+        <div class="progress-bar"><span id="test-progress-fill"></span></div>
+        <span class="progress-label" id="test-progress-label">1 / 100</span>
+      </div>
+      <div class="flip-scene" id="test-scene">
+        <div class="flip-card" id="test-card">
+          <div class="face front">
+            <span class="face-tag">EN</span>
+            <div class="face-word" id="test-en">—</div>
+            <span class="face-num">нажми, чтобы увидеть ответ</span>
+          </div>
+          <div class="face back">
+            <span class="face-tag">RU</span>
+            <div class="face-word small" id="test-ru">—</div>
+            <span class="face-tag kz">KZ</span>
+            <div class="face-word small" id="test-kk">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-controls" id="test-flip-row">
+        <button class="btn primary" id="test-flip">Показать ответ</button>
+      </div>
+      <div class="card-controls" id="test-controls" hidden>
+        <button class="btn good" id="test-know">✓ Знал</button>
+        <button class="btn bad" id="test-unknown">✗ Не знал</button>
+      </div>
+    </div>
+
+    <!-- result -->
+    <div id="test-result" class="test-result" hidden>
+      <div class="score-ring" id="score-ring"><span id="score-pct">0%</span></div>
+      <h2 id="score-title">Готово!</h2>
+      <p id="score-sub">Ты знал 0 из 0 слов.</p>
+      <div id="missed-wrap" hidden>
+        <h3>Слова, которые стоит повторить:</h3>
+        <ul id="missed-list" class="missed-list"></ul>
+      </div>
+      <div class="card-controls">
+        <button class="btn ghost" id="test-again">← Другое число</button>
+        <button class="btn primary" id="retry-missed" hidden>Повторить ошибки</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>1036 слов · Medium Level Wordlist V2.0</span>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js?v=3"></script>
+</body>
+</html>
